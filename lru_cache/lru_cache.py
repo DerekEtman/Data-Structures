@@ -1,5 +1,3 @@
-import sys
-sys.path.append('../doubly_linked_list')
 from doubly_linked_list import DoublyLinkedList
 
 class LRUCache:
@@ -13,8 +11,8 @@ class LRUCache:
     """
     def __init__(self, limit=10):
         self.limit = limit
-        self.items_holding = 0
-        self.DoublyLinkedList = DoublyLinkedList()
+        self.size = 0
+        self.order = DoublyLinkedList()
         self.storage = {}
 
 
@@ -27,10 +25,10 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-        if key in self.storage.keys():
+        if key in self.storage:
             element = self.storage[key]
-            self.DoublyLinkedList.move_to_front(self.storage[key])
-            return self.element[key].value[1]
+            self.order.move_to_front(self.storage[key])
+            return element[key].value[1]
         else:
             return None
 
@@ -48,18 +46,43 @@ class LRUCache:
     we simply want to overwrite the old value associated with the key with the newly-specified value.
     """
     def set(self, key, value):
+        # Create the Node, if key not found
+        # Move node to front if key is found
+        # if full remove last node from linked list and from dictionary 
+
+
         if key in self.storage.keys():
-            self.storage[key].value = (key, value)
-            self.DoublyLinkedList.move_to_front(self.storage[key])
-            return self.storage[key]
-        elif key not in self.storage.keys():
-            self.items_holding += 1
-            self.storage[key] = self.DoublyLinkedList.add_to_head([key, value])
+            node = self.storage[key]
+            node.value = (key,value)
+            self.order.move_to_end(node) 
+            return
+        
+        if self.size == self.limit:
+            del self.storage[self.order.head.value[0]]
+            self.order.remove_from_head()
+            self.size -= 1
+            return
 
-            if self.items_holding > self.limit:
-                self.items_holding -= 1
-                least_used = self.DoublyLinkedList.remove_from_tail()
-                del self.storage[least_used.value[0]]
+        self.order.add_to_tail((key,value))
+        self.size += 1 
+
+        
 
 
-            return self.storage[key]
+
+
+        # if key in self.storage.keys():
+        #     self.storage[key].value = (key, value)
+        #     self.DoublyLinkedList.move_to_front(self.storage[key])
+        #     return self.storage[key]
+        # elif key not in self.storage.keys():
+        #     self.items_holding += 1
+        #     self.storage[key] = self.DoublyLinkedList.add_to_head([key, value])
+
+        #     if self.items_holding > self.limit:
+        #         self.items_holding -= 1
+        #         least_used = self.DoublyLinkedList.remove_from_tail()
+        #         del self.storage[least_used.value[0]]
+
+
+        #     return self.storage[key]
