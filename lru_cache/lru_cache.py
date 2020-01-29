@@ -27,10 +27,17 @@ class LRUCache:
     def get(self, key):
         if key in self.storage:
             element = self.storage[key]
-            self.order.move_to_front(self.storage[key])
-            return element[key].value[1]
+            self.order.move_to_end(element)
+            return element.value[1]
         else:
             return None
+
+        # if key in self.storage:
+        #     element = self.storage[key]
+        #     self.order.move_to_front(self.storage[key])
+        #     return element.value[1]
+        # else:
+        #     return None
 
         
 
@@ -61,9 +68,9 @@ class LRUCache:
             del self.storage[self.order.head.value[0]]
             self.order.remove_from_head()
             self.size -= 1
-            return
 
         self.order.add_to_tail((key,value))
+        self.storage[key] = self.order.tail
         self.size += 1 
 
         
