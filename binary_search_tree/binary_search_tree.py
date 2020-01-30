@@ -1,5 +1,5 @@
-# from dll_stack import Stack
-# from dll_queue import Queue
+from dll_stack import Stack
+from dll_queue import Queue
 import sys
 sys.path.append('../queue_and_stack')
 
@@ -15,33 +15,35 @@ class BinarySearchTree:
         # compare value to the root value
         # if the value is greater than the root value
         # print(f"initial value {self.value}")
-        if not self.value:
-            self.value = value
-            return self.value
+        # if not self.value:
+        #     self.value = BinarySearchTree(value)
+        #     return self.value
 
-        elif self.value < value:
+        if self.value < value:
             # 
             if not self.right:
                 # store the value to the right
-                self.right = value
-                return
+                self.right = BinarySearchTree(value)
+                # return
 
             else:
                 # if theres a child already repeat the process on that child
-                self.value = self.right
-                return self.insert(value)
+                # self.value = self.right
+                # return self.insert(value)
+                return self.right.insert(value)
 
         # elif the value is less than the root value
-        elif  self.value > value: 
+        if  self.value > value: 
             if not self.left:
-                self.left = value
+                self.left = BinarySearchTree(value)
                 return
             # if there's a child already repeat the process on that child
             # store the value to the left
             else:
                 # if theres a child already repeat the process on that child
-                self.value = self.left
-                return self.insert(value)
+                # self.value = self.left
+                # return self.insert(value)
+               return self.left.insert(value)
 
     # Return True if the tree contains the value
     # False if it does not
@@ -60,8 +62,8 @@ class BinarySearchTree:
                     return False
                 else:
                 # move to the right node and check again
-                    self.value = self.right
-                    return self.contains(target)
+                    # self.value = self.right
+                    return self.right.contains(target)
             # elif target is smaller than current value
             else:
                 # if left node == None
@@ -69,28 +71,39 @@ class BinarySearchTree:
                 # return False
                     return False
                 else:
-                    self.value = self.left
+                    # self.value = self.left
                 # move to the left node and check again
-                    return self.contains(target)
+                    return self.left.contains(target)
 
         # Return the maximum value found in the tree
     def get_max(self):
-        current_largest = 0
+        # current_largest = 0
         # print(f"Current_largest {current_largest}")
 
-        if self.value > current_largest:
-            current_largest = self.value
-            self.value = self.right
-            return self.get_max()
+        # if self.value > current_largest:
+        #     # current_largest = self.value
+        #     # self.value = self.right
+        #     return self.right.get_max()
+        # else:
+        #     return current_largest
+
+
+        if not self.right:
+            return self.value
         else:
-            return current_largest
+            return self.right.get_max()
 
         # Call the function `cb` on the value of each node
         # You may use a recursive or iterative approach
 
 
     def for_each(self, cb):
-        pass
+        cb(self.value)
+
+        if self.left:
+            self.left.for_each(cb)
+        if self.right:
+            self.right.for_each(cb)
 
     # DAY 2 Project -----------------------
 
