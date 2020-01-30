@@ -21,26 +21,27 @@ class BinarySearchTree:
 
         elif self.value < value:
             # 
-            if self.right == None:
+            if not self.right:
                 # store the value to the right
-                # print(f"first self.value {self.value}, value {value}")
                 self.right = value
-                # print(f"value: {value}, Self.value: {self.value}")
+                return
+
             else:
                 # if theres a child already repeat the process on that child
                 self.value = self.right
-                # return self.insert(value)
+                return self.insert(value)
+
         # elif the value is less than the root value
         elif  self.value > value: 
             if not self.left:
                 self.left = value
+                return
             # if there's a child already repeat the process on that child
             # store the value to the left
             else:
                 # if theres a child already repeat the process on that child
                 self.value = self.left
-                # return self.insert(value)
-        return
+                return self.insert(value)
 
     # Return True if the tree contains the value
     # False if it does not
@@ -54,7 +55,7 @@ class BinarySearchTree:
             # if target is larger than current value
             if target > self.value:
                 # if right node == None
-                if self.right == None:
+                if not self.right:
                 # return False
                     return False
                 else:
@@ -64,7 +65,7 @@ class BinarySearchTree:
             # elif target is smaller than current value
             else:
                 # if left node == None
-                if self.left == None:
+                if not self.left:
                 # return False
                     return False
                 else:
